@@ -22,7 +22,7 @@ void AddName(map<string, Data> &phoneBook) {
     string lastName, firstName, patronymic_Name, Phone, Group;
     cout << "Введите фамилию \n";
     cin >> lastName;
-    data.lastname = data.lastname;
+    data.lastname = lastName;
     cout << "Введите имя \n";
     cin >> firstName;
     data.firstname = firstName;
@@ -38,30 +38,17 @@ void AddName(map<string, Data> &phoneBook) {
     phoneBook.insert(make_pair(lastName, data));
 }
 
-void InputPhoneBook(map<string, string> &phoneBook) {
-    string tel, name;
-    cout << "Enter phone's number:\n";
-    cin >> tel;
-    cout << "Enter name \n";
-    cin >> name;
-    phoneBook.insert(pair<string, string>(tel, name));
-}
-
-void ShowPhoneBook(map<string, string> phoneBook) {
-    for (pair<string, string> element : phoneBook) {
-        cout << element.first << " - " << element.second << endl;
-    }
-}
-
 void ShowAll(map<string, Data> phoneBook) {
+    cout << "\n\n\n\t+++ПОЛНЫЙ СПИСОК+++\n\n\n";
+    int i = 1;
     for (auto data : phoneBook) {
-        cout << endl;
-        cout << data.first << " "
-             << data.second.lastname << " "
-             << data.second.firstname << " "
-             << data.second.patronymic_name << " "
-             << data.second.phone << " "
-             << data.second.group << endl;
+        cout << "+++HUMAN # " << i << "+++" << endl << endl;
+        cout << "First name - " << data.first << endl;
+        cout << "Second name - " << data.second.firstname << endl;
+        cout << "Second name - " << data.second.patronymic_name << endl;
+        cout << "Phone number - " << data.second.phone << endl;
+        cout << "Group - " << data.second.group << endl << endl << endl;
+        i++;
     }
 }
 
@@ -98,57 +85,61 @@ void ChangePerson(map<string, Data> &phoneBook, string key, int change, string t
     FindPerson(phoneBook, key);
 }
 
-
 void DeletePerson(map<string, Data> &phoneBook, string key) {
     phoneBook.erase(key);
 }
 
-
 int main() {
     system("chcp 65001");
-
     map<string, Data> phoneBook;
-
     Welcome();
     ShowMenu();
     string key;
     string temp;
     int change;
-    char menu;
-    cin >> menu;
-    switch (menu) {
-        case '1': {
-            int fl;
-            do {
-                AddName(phoneBook);
-                cout << "Добавить еще людей в список? (1 - да, 0 - нет)\n";
-                cin >> fl;
-            } while (fl != 0);
+    char menu = '-';
+    while (menu !='9') {
+        cin >> menu;
+        switch (menu) {
+            case '1': {
+                int fl;
+                do {
+                    AddName(phoneBook);
+                    cout << "Добавить еще людей в список? (1 - да, 0 - нет)\n";
+                    cin >> fl;
+                } while (fl != 0);
+                break;
+            }
+            case '2': {
+                cin>>key;
+                FindPerson(phoneBook, key);
+                break;
+            }
+            case '3': {
+                ShowAll(phoneBook);
+                break;
+            }
+            case '4': {
+                cin>>key;
+                ChangePerson(phoneBook, key, change, temp);
+                break;
+            }
+            case '5': {
+                cin>>key;
+                DeletePerson(phoneBook, key);
+                break;
+            }
+                //    case '6': {
+                //      ExportToFile(phoneBook);
+                //      break;
+                // }
+                //     case '7': {
+                //       ImportFromFile(phoneBook);
+                //      break;
+                // }
         }
-        case '2': {
-            FindPerson(phoneBook, key);
-            return main();
-        }
-        case '3': {
-            ShowAll(phoneBook);
-            return main();
-        }
-        case '4': {
-            ChangePerson(phoneBook, key, change, temp);
-            return main();
-        }
-        case '5': {
-            DeletePerson(phoneBook, key);
-            return main();
-        }
-        case '6': {
-            ExportToFile(phoneBook);
-            break;
-        }
-        case '7': {
-            ImportFromFile(phoneBook);
-            break;
-        }
+        return main();
     }
-
 }
+
+
